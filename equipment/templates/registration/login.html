@@ -1,10 +1,70 @@
-{% extends 'base.html' %}
+{% load static %}
+<html>
+    <head>
+        <title>
+            Вход в систему
+        </title>
+        <script src="{% static 'bootstrap/js/jquery-2.2.3.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/signin.css' %}">
 
-{% block authorisation %}
-    <h2>Авторизация</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Вход</button>
-    </form>
-{% endblock %}
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/AdminLTE.css' %}">
+        <link rel="stylesheet" href="{% static 'css/skin-blue.css' %}">
+
+        <style>
+                body {
+                  padding-top: 90px;
+                }    
+            
+                .skleit {
+                    margin-top: -16px;
+                }
+            
+                .skleit_alert {
+                    margin-bottom: 5px;
+                    height: 10px;
+                }
+            
+                p {
+                    margin-top: -10px;
+                }
+            
+                h5 {
+                    padding-bottom: 50px;
+                }
+            
+                .text-center {
+                  text-align: center;
+                }
+            
+                .sk2 {
+                  margin-bottom: 15px;
+                }
+            
+                .glyph {
+                    margin-top: 5px;
+                }
+            
+                </style>
+
+    </head>
+    <body>
+        <div class="container">
+            <h4 class="text-center form-signin-heading">Авторизация</h4>
+            <form method="POST" class="form-signin">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        <br>
+                       <input name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}" />
+                    </div>
+                {% endfor %}
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
+            </form>
+        </div>
+    </body>
+</html>

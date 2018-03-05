@@ -1,0 +1,56 @@
+body {
+    padding-top: 20px;
+    margin-left: -10px;
+  }
+
+  .vniz{
+      padding-top: 10px;
+  }
+
+  .sidebar
+  {
+      overflow:  hidden;
+      /*display: block;*/
+      top: 0;
+      left: 0;
+      padding-top: 50px;
+      padding-left: 0px;
+      min-height: 100%;
+      width: 230px;
+      z-index: 810;
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+      -moz-transition: -moz-transform 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+      -o-transition: -o-transform 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+      transition: transform 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+
+      background: #222d32;
+  }
+
+  .skin-blue .navbar .nav > li > a {color: #ffffff; }         /*цвет ссылок в навигации*/
+  .skin-blue .navbar .nav > li > a:hover,                     /*без наведения - по умолчанию*/
+  .skin-blue .navbar .nav > li > a:focus {color: #222d32; };  /*при наведении*/
+  
+  .skin-blue .navbar-header .logo 
+  {
+      background-color: #367fa9;
+      color: #ffffff;
+      border-bottom: 0px solid transparent;
+  }
+
+  .navbar-header .logo 
+  {
+      display: block;
+      float: left;
+      height: 50px;
+      font-size: 20px;
+      line-height: 50px;
+      text-align: left;
+      width: 430px;
+      /*font-family: Helvetica, Arial, sans-serif;*/
+      padding: 0px;
+      font-weight: 300;
+  }
+
+  .skin-blue .navbar .navbar-header > a {color: #ffffff; }         /*цвет ссылок в навигации*/
+  .skin-blue .navbar .navbar-header > a:hover,                     /*без наведения - по умолчанию*/
+  .skin-blue .navbar .navbar-header > a:focus {color: #222d32; };  /*при наведении*/
