@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import equipmentType, Unit
 from django.shortcuts import redirect
 from django.views.generic import DeleteView, UpdateView
+from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
 # Импортируем формы
