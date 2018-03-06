@@ -6,7 +6,7 @@ class equipmentForm(forms.ModelForm):
 
     class Meta:
         model = equipmentType
-        fields = ('name', 'model', 'inv_number',)
+        fields = ('name', 'model', 'inv_number', 'equipment',)
 
 class unitForm(forms.ModelForm):
 
