@@ -58,8 +58,11 @@
         <div class="sidebar">
             <ul class="sidebar-menu">
                <li><a href="/"><i class="fa fa-cubes"></i> Оборудование</a></li>
-               <li><a href="unit"><i class="fa fa-circle-o"></i> Узлы оборудования</a></li>
-               <li><a href="service"><i class="fa fa-book"></i> Карты обслуживания</a></li>
+               <li><a href="/unit"><i class="fa fa-gear"></i> Узлы оборудования</a></li>
+               <li><a href="/service"><i class="fa fa-book"></i> Карты обслуживания</a></li>
+               {% if user.is_superuser %}
+               <li><a href="admin"><i class="fa fa-users"></i> Администрирование</a></li>
+               {% endif %}
             </ul>
         </div>
         <div class="row">

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+body {
+        padding-top: 45px;
+}            
+.btn_in_bottom {
+        margin-bottom: 25px;
+}
+</style>
+
+        <h1 class="page-header"><i class="fa fa-gear"></i> Узлы оборудования</h1>
+
+        <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_unit' %}" role="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить узел</a>  
+    
+    <div class="table-responsive">
+            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+                    <thead>
+                        <tr>
+                            <th><center>#</center></th>
+                            <th><center>Наименование</center></th>
+                            <th><center>Описание работ</center></th>
+                            <th><center>Время выполнения (мин.)</center></th>                            
+                            <th><center>Периодичность выполнения (дн.)</center></th>
+                            <th class="text-center">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for item in unit %}
+                            <tr>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.description }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.time }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.periodicity }}</center></small></td>
+                                <td class="text-center">
+                                        <div class="btn-group btn-group-xs ">
+                                                <a href="{% url 'unit_edit' item.pk %}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                <a href="{% url 'unit_delete' item.pk  %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                </td>
+                            </tr>
+                            {% endfor %} 
+                    </tbody>
+            </table>
+    </div>
+
+{% endblock content %}
