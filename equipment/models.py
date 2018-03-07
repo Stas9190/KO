@@ -23,7 +23,7 @@ class equipmentType(models.Model):
     inv_number = models.CharField('Инвентарный номер', max_length=200, null=False)
     date = models.DateTimeField(blank=True, null=True)
     #! Связь многие ко многим, equipment <--> unit
-    equipment = models.ManyToManyField(Unit, verbose_name = 'Выбрать узлы')
+    units = models.ManyToManyField(Unit, verbose_name = 'Выбрать узлы')
 
     def get_absolute_url(self):
         return reverse('home')

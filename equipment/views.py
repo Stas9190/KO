@@ -27,6 +27,7 @@ def equipmentCreateView(request):
             eq.name = request.POST.get("name")
             eq.model = request.POST.get("model")
             eq.inv_number = request.POST.get("inv_number")
+            #eq.units = request.POST.get("units")
             eq.date = timezone.now()
             eq.save()
             return redirect("home")
