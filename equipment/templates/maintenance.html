@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+        body {
+              padding-top: 45px;
+            }
+        
+            .btn_in_bottom {
+                margin-bottom: 25px;
+            }
+</style>
+     
+    <h1 class="page-header"><i class="fa fa-cubes"></i> Обслуживание оборудования</h1>
+
+    <div class="table-responsive">
+            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+                    <thead>
+                        <tr>
+                            <th><center>#</center></th>
+                            <th><center>Наименование</center></th>
+                            <th><center>Модуль</center></th>
+                            <th><center>Выполняемые работы</center></th>
+                            <th><center>Время выполнения (мин.)</center></th> 
+                            <th><center>Исполнитель работ</center></th>
+                            <th><center>Периодичность выполнения (дн.)</center></th>
+                            <th><center>Наработано</center></th>  
+                            <th><center>Изображение</center></th>
+                            <th><center>Действие</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for item in mList %}
+                            <tr>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.e_name }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.u_name }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.description }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.time }}</center></small></td>
+                                <td></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.periodicity }}</center></small></td>
+                                <td></td>
+                                <td style=" vertical-align: middle; "><small><center><img src="{{MEDIA_URL}}{{item.photo}}" style="width: 250px; height:250px;" alt=""></center></small></td>
+                                <td>
+                                    <center>
+                                        <a class="btn btn-success" href="/">
+                                            <span aria-hidden="true"></span> Выполнить работы
+                                        </a>    
+                                    </center>
+                                </td>
+                            </tr>
+                            {% endfor %} 
+                    </tbody>
+            </table>
+    </div>
+
+{% endblock content %}

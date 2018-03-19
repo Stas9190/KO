@@ -27,15 +27,26 @@
                     <h1 class="panel-title">Новая единица</h1>
             </div>
             <div class="panel-body">
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% for field in form %}
                             <div class="form-group has-feedback">
                                {{ field.label_tag }}
                                <br>
-                               <input name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}"/>
+                               <!--<input name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}"/>-->
+                               {{ field }}
                             </div>
                             {% endfor %}
+                            <!--<div class="form-group has-feedback">
+                                <label>Выбор группы</label>
+                                <select name="group" class="form-control selectpicker show-tick" data-live-search="true" required>
+                                    <option value="" disabled selected>Группа</option>
+                                    {% for item in groups %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="interval" align="right"><small><a href="">Добавить группу</a></small></div>
+                            </div>-->
                             <input type="submit" class="btn btn-lg btn-success" value="Добавить" />
                     </form>
             </div>

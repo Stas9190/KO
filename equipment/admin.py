@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import equipmentType,  Unit
+from .models import Equipment, Unit, Untigroup
 
-admin.site.register(equipmentType)
+admin.site.register(Equipment)
 admin.site.register(Unit)
+#admin.site.register(Junction)
+admin.site.register(Untigroup)

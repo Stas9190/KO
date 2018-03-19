@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+        body {
+              padding-top: 45px;
+            }
+        
+            .btn_in_bottom {
+                margin-bottom: 25px;
+            }
+</style>
+     
+    <h1 class="page-header"><i class="fa fa-cubes"></i> Обслуживание оборудования</h1>
+
+    <div class="table-responsive">
+            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+                    <thead>
+                        <tr>
+                            <th><center>#</center></th>
+                            <th><center>Наименование</center></th>
+                            <th><center>Модель</center></th>
+                            <th><center>Инвентарный номер</center></th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for item in serviceList %}
+                            <tr>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center><a href="{% url 'maintenance' item.pk %}">{{ item.name }}</a></center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>
+                            </tr>
+                            {% endfor %} 
+                    </tbody>
+            </table>
+    </div>
+
+{% endblock content %}

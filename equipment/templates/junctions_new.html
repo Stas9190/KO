@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+        body {
+          padding-top: 45px;
+        }    
+    
+        .left_krai {
+            padding-left: 0px;
+        }
+        
+        .interval {
+            margin-bottom: -20px;
+        }
+    
+        textarea {
+        resize: none; /* Запрещаем изменять размер */
+       } 
+    
+</style>
+
+    <div class="col-sm-5 col-sm-offset-0 left_krai">
+        <div class="panel panel-info">
+            <div class="panel-heading panel-title">
+                    <h1 class="panel-title">Оборудование</h1>
+            </div>
+            <div class="panel-body">
+                    <form method="POST">
+                            {% csrf_token %}
+                            <!--<div class="form-group has-feedback">
+                                <label for="inputText">Выбор типа оборудования</label>
+                                <select name="equipment_type" class="form-control selectpicker show-tick" data-live-search="true" required>
+                                    <option value="" disabled selected>Тип оборудования</option>
+                                    {% for eq in equipments %}
+                                        <option value="{{ eq.id }}">{{ eq.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="interval" align="right"><small><a href="{% url 'new_equipment' %}">Добавить новый тип</a></small></div>
+                            </div>
+                            <div class="form-group has-feedback">-->
+                                <!--<select name="units" multiple="multiple">
+                                    <option value="" disabled selected>Модуль</option>
+                                    {% for un in units %}
+                                        <option value="{{ un.id }}">{{ un.name }}</option>
+                                    {% endfor %}
+                                </select>-->
+                                <!--{% for un in units %}
+                                    <input type="checkbox" name="array" value="{{ un.id }}"> {{ un.name }}
+                                    <br>
+                                {% endfor %}
+                                <div class="interval" align="right"><small><a href="{% url 'new_unit' %}">Добавить новый модуль</a></small></div>
+                            </div>-->
+                            {% for field in form %}
+                                <div class="form-group has-feedback">
+                                {{ field.label }}
+                                <br>
+                                {{ field }}
+                                </div>
+                            {% endfor %}
+                            <input type="submit" class="btn btn-lg btn-success" value="Создать" />
+                    </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

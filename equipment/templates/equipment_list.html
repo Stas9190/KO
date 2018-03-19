@@ -11,7 +11,7 @@
             }
 </style>
      
-    <h1 class="page-header"><i class="fa fa-cubes"></i> Оборудование</h1>
+    <h1 class="page-header"><i class="fa fa-cubes"></i> Типы оборудования</h1>
 
     <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_equipment' %}" role="button">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить единицу</a>  
@@ -23,7 +23,7 @@
                             <th><center>#</center></th>
                             <th><center>Наименование</center></th>
                             <th><center>Модель</center></th>
-                            <th><center>Инвентарный номер</center></th>                            
+                            <!--<th><center>Инвентарный номер</center></th>                            -->
                             <th><center>Дата</center></th>
                             <th class="text-center">Действие</th>
                         </tr>
@@ -34,7 +34,7 @@
                                 <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
-                                <td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>
+                                <!--<td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>-->
                                 <td style=" vertical-align: middle; "><small><center>{{ item.date }}</center></small></td>
                                 <td class="text-center">
                                         <div class="btn-group btn-group-xs ">

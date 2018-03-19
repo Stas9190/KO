@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+body {
+        padding-top: 45px;
+}            
+.btn_in_bottom {
+        margin-bottom: 25px;
+}
+</style>
+
+        <h1 class="page-header"><i class="fa fa-gear"></i> Оборудование</h1>
+
+        <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_junctions' %}" role="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое</a>
+            
+            <div class="table-responsive">
+                    <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+                            <thead>
+                                <tr>
+                                    <th><center>#</center></th>
+                                    <th><center>Наименование</center></th>
+                                    <th><center>Модель</center></th>
+                                    <!--<th><center>Инвентарный номер</center></th>                            -->
+                                    <th><center>Инвентарный номер</center></th>
+                                    <th class="text-center">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    {% for item in equipList %}
+                                    <tr>
+                                        <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                        <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
+                                        <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
+                                        <!--<td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>-->
+                                        <td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>
+                                        <td class="text-center">
+                                                <div class="btn-group btn-group-xs ">
+                                                        <a href="{% url 'equipment_edit' item.pk %}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                        <a href="{% url 'junctions_delete' item.pk %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %} 
+                            </tbody>
+                    </table>
+            </div>
+
+
+{% endblock content %}
