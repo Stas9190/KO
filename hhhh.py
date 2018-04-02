@@ -229,3 +229,13 @@ class UpackJournalTest(models.Model):
     class Meta:
         managed = False
         db_table = 'upack_journal_test'
+
+
+class Work(models.Model):
+    id_user = models.IntegerField()
+    id_maintaince = models.IntegerField()
+    date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'work'

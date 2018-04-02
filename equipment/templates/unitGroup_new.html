@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+        body {
+          padding-top: 45px;
+        }    
+    
+        .left_krai {
+            padding-left: 0px;
+        }
+        
+        .interval {
+            margin-bottom: -20px;
+        }
+    
+        textarea {
+        resize: none; /* Запрещаем изменять размер */
+       } 
+    
+</style>
+
+    <div class="col-sm-5 col-sm-offset-0 left_krai">
+        <div class="panel panel-info">
+            <div class="panel-heading panel-title">
+                    <h1 class="panel-title">Новая группа</h1>
+            </div>
+            <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            <div class="form-group has-feedback">
+                               {{ field.label_tag }}
+                               <br>
+                               {{ field }}
+                            </div>
+                            {% endfor %}
+                            <input type="submit" class="btn btn-lg btn-success" value="Добавить" />
+                    </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

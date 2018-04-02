@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+        body {
+          padding-top: 45px;
+        }    
+    
+        .left_krai {
+            padding-left: 0px;
+        }
+</style>
+
+<div class="col-sm-5 col-sm-offset-0 left_krai">
+    <div class="panel panel-info">
+        <div class="panel-heading panel-title">
+            <h1 class="panel-title">Редактирование</h1>
+        </div>
+        <div class="panel-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        <br>
+                        <input value="{{ field.value }}" name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}"/>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-lg btn-success" type="submit">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Обновить
+                </button>
+                <!--<a class="btn btn-lg btn-success" href="/">
+                        <span  class="fa fa-copy" aria-hidden="true"></span> Копировать
+                </a>-->
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

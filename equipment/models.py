@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from smart_selects.db_fields import ChainedManyToManyField
 
 # Узлы оборудования
 class Unit(models.Model):
@@ -34,7 +35,7 @@ class Equipment(models.Model):
         db_table = 'Equipment'
     
     def get_absolute_url(self):
-        return reverse('home')
+        return reverse('equipment_list')
     
     def __str__(self):
         return self.name
@@ -50,18 +51,6 @@ class Untigroup(models.Model):
     
     def __str__(self):
         return self.name
-
-# Связи между оборудованием и его узлами
-#class Junction(models.Model):
- #   id = models.AutoField(primary_key=True)
-  #  id_unit = models.DecimalField(max_digits=18, decimal_places=0)
-   # id_equipment = models.DecimalField(max_digits=18, decimal_places=0)
-    #id_unit = models.ForeignKey('Unit', models.DO_NOTHING, db_column='id_unit')
-    #id_equipment = models.ForeignKey(Equipment, models.DO_NOTHING, db_column='id_equipment')
-
-    #class Meta:
-     #   managed = False
-      #  db_table = 'Junction'
 
 # Создаем новое оборудование и определяем связь с узлами
 class Equip(models.Model):
@@ -84,8 +73,8 @@ class Maintenance(models.Model):
 
 # Связка между Equip и Unit
 class EquipmentEquipUnits(models.Model):
-    equip = models.ForeignKey(Equip, models.DO_NOTHING)
-    unit = models.ForeignKey(Unit, models.DO_NOTHING)
+    equip = models.ForeignKey(Equip, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     fact = models.IntegerField(default=0) # Фактическое время наработки
 
     class Meta:
@@ -94,7 +83,15 @@ class EquipmentEquipUnits(models.Model):
         unique_together = (('equip', 'unit'),)
         auto_created = True    #!!!! при использовании through добавить это
 
+# Выполненные работы
+class Work(models.Model):
+    id_user = models.IntegerField()
+    id_maintaince = models.IntegerField()
+    date = models.DateTimeField()
 
+    class Meta:
+        managed = False
+        db_table = 'work'
 
 #Соответствия между узлами и типами оборудования
 #class Junction(models.Model):

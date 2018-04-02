@@ -31,7 +31,11 @@
                     </thead>
                     <tbody>
                             {% for item in mList %}
-                            <tr>
+                            {% if item.fact > item.periodicity %}
+                                <tr style="background-color: darkorange;">
+                            {% else %}
+                                <tr>
+                            {% endif %}
                                 <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.e_name }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.u_name }}</center></small></td>
@@ -39,19 +43,24 @@
                                 <td style=" vertical-align: middle; "><small><center>{{ item.time }}</center></small></td>
                                 <td></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.periodicity }}</center></small></td>
-                                <td></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.fact }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center><img src="{{MEDIA_URL}}{{item.photo}}" style="width: 250px; height:250px;" alt=""></center></small></td>
                                 <td>
                                     <center>
-                                        <a class="btn btn-success" href="/">
-                                            <span aria-hidden="true"></span> Выполнить работы
-                                        </a>    
+                                        {% if item.fact > 0 %}
+                                            <a class="btn btn-success" href="{% url 'to_perform' item.pk %}">
+                                                <span aria-hidden="true"></span> Выполнить работы
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-success" disabled="disabled">Выполнить работы</button>
+                                        {% endif %}
                                     </center>
                                 </td>
                             </tr>
                             {% endfor %} 
                     </tbody>
             </table>
+            <a href="{% url 'to_pdf' pk %}">Генерировать PDF</a>
     </div>
 
 {% endblock content %}

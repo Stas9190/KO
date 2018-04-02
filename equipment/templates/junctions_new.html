@@ -52,13 +52,55 @@
                                 {% endfor %}
                                 <div class="interval" align="right"><small><a href="{% url 'new_unit' %}">Добавить новый модуль</a></small></div>
                             </div>-->
-                            {% for field in form %}
-                                <div class="form-group has-feedback">
-                                {{ field.label }}
+                            <div class="form-group has-feedback">                                
+                                {{ form.inv_number.label }}
                                 <br>
-                                {{ field }}
-                                </div>
-                            {% endfor %}
+                                {{ form.inv_number }}
+                            </div>
+                            <div class="form-group has-feedback">                                
+                                    <!--{{ form.equipment_id.label }}
+                                    <br>
+                                    {{ form.equipment_id }}-->
+                                    Тип оборудования
+                                    <select name="equipment_id" class="form-control selectpicker show-tick">
+                                        <option value="" disabled selected>Выберите оборудование</option>
+                                        {% for e in equipments %}
+                                            <option value="{{ e.id }}">Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                        {% endfor %}
+                                    </select>
+                            </div>
+                            <!--<div class="form-group has-feedback">    
+                                    Группа
+                                    <br>
+                                    <select name="group" id="group" class="form-control selectpicker show-tick">
+                                        <option value="" disabled selected>Выберите группу</option>
+                                        {% for g in groups %}
+                                            <option value="{{ g.id }}">{{ g.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                            </div>-->
+                            <div class="form-group has-feedback" style="margin-top: 50px; margin-left: 10px;">                                
+                                   <!-- {{ form.units.label }}
+                                    <br>
+                                    {% for field in form.units %}
+                                       {{ field }} <br>
+                                    {% endfor %}-->
+                                    <table border=0>
+                                    <tr>
+                                    {% for gr in groups %}   
+                                    <td style="vertical-align: top; width: 150px">
+                                    <i>{{ gr.name }}</i>
+                                    <hr>
+                                        {% for u in units %}
+                                            {% if u.group == gr.name %}
+                                                <input type="checkbox" name="units" value="{{u.id}}"> {{u.name}} <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </td>
+                                    </tr>
+                                    </table>
+                            </div>
                             <input type="submit" class="btn btn-lg btn-success" value="Создать" />
                     </form>
             </div>
