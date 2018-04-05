@@ -24,34 +24,11 @@
     <div class="col-sm-5 col-sm-offset-0 left_krai">
         <div class="panel panel-info">
             <div class="panel-heading panel-title">
-                    <h1 class="panel-title">Оборудование</h1>
+                    <h1 class="panel-title">Создать КЕ</h1>
             </div>
             <div class="panel-body">
                     <form method="POST">
                             {% csrf_token %}
-                            <!--<div class="form-group has-feedback">
-                                <label for="inputText">Выбор типа оборудования</label>
-                                <select name="equipment_type" class="form-control selectpicker show-tick" data-live-search="true" required>
-                                    <option value="" disabled selected>Тип оборудования</option>
-                                    {% for eq in equipments %}
-                                        <option value="{{ eq.id }}">{{ eq.name }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="interval" align="right"><small><a href="{% url 'new_equipment' %}">Добавить новый тип</a></small></div>
-                            </div>
-                            <div class="form-group has-feedback">-->
-                                <!--<select name="units" multiple="multiple">
-                                    <option value="" disabled selected>Модуль</option>
-                                    {% for un in units %}
-                                        <option value="{{ un.id }}">{{ un.name }}</option>
-                                    {% endfor %}
-                                </select>-->
-                                <!--{% for un in units %}
-                                    <input type="checkbox" name="array" value="{{ un.id }}"> {{ un.name }}
-                                    <br>
-                                {% endfor %}
-                                <div class="interval" align="right"><small><a href="{% url 'new_unit' %}">Добавить новый модуль</a></small></div>
-                            </div>-->
                             <div class="form-group has-feedback">                                
                                 {{ form.inv_number.label }}
                                 <br>
@@ -69,26 +46,12 @@
                                         {% endfor %}
                                     </select>
                             </div>
-                            <!--<div class="form-group has-feedback">    
-                                    Группа
-                                    <br>
-                                    <select name="group" id="group" class="form-control selectpicker show-tick">
-                                        <option value="" disabled selected>Выберите группу</option>
-                                        {% for g in groups %}
-                                            <option value="{{ g.id }}">{{ g.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                            </div>-->
                             <div class="form-group has-feedback" style="margin-top: 50px; margin-left: 10px;">                                
-                                   <!-- {{ form.units.label }}
-                                    <br>
-                                    {% for field in form.units %}
-                                       {{ field }} <br>
-                                    {% endfor %}-->
+                                    <b>Группы:</b><br><br>    
                                     <table border=0>
                                     <tr>
                                     {% for gr in groups %}   
-                                    <td style="vertical-align: top; width: 150px">
+                                    <td style="vertical-align: top; width: 200px; border-right: 0px solid black; padding: 20px;">
                                     <i>{{ gr.name }}</i>
                                     <hr>
                                         {% for u in units %}

@@ -90,6 +90,9 @@ DATABASES = {
         'HOST': '10.6.0.61',
         'USER': 'sa',
         'PASSWORD': 'sa',
+        'OPTIONS' : {
+            'DRIVER': 'ODBC Driver 17 for SQL Server',
+        }
     }
 }
 

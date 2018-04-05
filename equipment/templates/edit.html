@@ -23,7 +23,8 @@
                     <div class="form-group">
                         {{ field.label_tag }}
                         <br>
-                        <input value="{{ field.value }}" name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}"/>
+                        {{ field }}
+                        <!--<input value="{{ field.value }}" name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{field.field.widget.input_type}}">-->
                     </div>
                 {% endfor %}
                 <button class="btn btn-lg btn-success" type="submit">

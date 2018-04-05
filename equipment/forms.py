@@ -1,12 +1,25 @@
 from django import forms
 
-from .models import Equipment, Unit, Untigroup, Equip
+from .models import Equipment, Unit, Untigroup, Equip, Executor
+
+class executorForm(forms.ModelForm):
+
+    class Meta:
+        model = Executor
+        fields = ('executor',)
+        widgets = {
+            'executor': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
 
 class equipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = ('name', 'model',)
+        fields = ('group_name', 'model',)
+        widgets = {
+            'group_name': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
+            'model': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
 
 class unitForm(forms.ModelForm):
 
@@ -17,14 +30,14 @@ class unitForm(forms.ModelForm):
             'name': 'Наименование',
             'id_unitgroup': 'Выбор группы',
             'description': 'Описание работ',
-            'time': 'Время выполнения',
-            'periodicity': 'Периодичность выполнения',
+            'time': 'Время выполнения (мин)',
+            'periodicity': 'Периодичность выполнения (дн)',
             'photo': 'Изображение',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
-            'executor': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'executor': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'time':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
             'periodicity':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
             'id_unitgroup': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),

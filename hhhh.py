@@ -12,10 +12,19 @@ class Equipment(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     model = models.CharField(max_length=200)
     date = models.DateTimeField()
+    group_name = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='group_name', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Equipment'
+
+
+class Executor(models.Model):
+    executor = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'Executor'
 
 
 class Unit(models.Model):
@@ -26,7 +35,7 @@ class Unit(models.Model):
     periodicity = models.DecimalField(max_digits=18, decimal_places=0, blank=True, null=True)
     photo = models.CharField(max_length=50, blank=True, null=True)
     date = models.DateTimeField(blank=True, null=True)
-    executor = models.CharField(max_length=200, blank=True, null=True)
+    executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True)
 
     class Meta:
         managed = False

@@ -14,18 +14,52 @@
 <div class="col-sm-5 col-sm-offset-0 left_krai">
     <div class="panel panel-info">
         <div class="panel-heading panel-title">
-            <h1 class="panel-title">Редактирование</h1>
+            <h1 class="panel-title">Редактирование КЕ</h1>
         </div>
         <div class="panel-body">
             <form action="" method="POST">
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        <br>
-                        <input value="{{ field.value }}" name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}"/>
-                    </div>
-                {% endfor %}
+                <div class="form-group">
+                    <label for="inv_number">Инвентарный номер</label><br>
+                    {% for item in inv_number %}
+                    <input type="text" id="inv_number" name="inv_number" class="form-control" value="{{item.inv_number}}">
+                    {% endfor %}
+                </div>
+                <div class="form-group has-feedback">                                
+                        <label for="equipment_id">Тип оборудования</label>
+                        <select name="equipment_id" id="equipment_id" class="form-control selectpicker show-tick">
+                            <option value="" disabled selected>Выберите оборудование</option>
+                            {% for e in equipments %}
+                                {% if e.id == selectedEquip %}
+                                    <option value="{{ e.id }}" selected>Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                {% else %}
+                                    <option value="{{ e.id }}" >Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="form-group has-feedback" style="margin-top: 50px; margin-left: 10px;">
+                         <b>Группы:</b><br><br>
+                         <table border=0>
+                         <tr>
+                         {% for gr in groups %}   
+                         <td style="vertical-align: top; width: 200px; border-right: 0px solid black; padding: 20px;">
+                         <i>{{ gr.name }}</i>
+                         <hr>
+                             {% for u in units %}
+                                 {% if u.group == gr.name %}
+                                        {% if u.id in checkedUnits %}
+                                            <input type="checkbox" name="units" value="{{u.id}}" checked> {{u.name}} <br>
+                                        {% else %}
+                                            <input type="checkbox" name="units" value="{{u.id}}"> {{u.name}} <br>
+                                        {% endif %}
+                                 {% endif %}
+                             {% endfor %}
+                         {% endfor %}
+                         </td>
+                         </tr>
+                         </table>
+                 </div>
                 <button class="btn btn-lg btn-success" type="submit">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Обновить
                 </button>

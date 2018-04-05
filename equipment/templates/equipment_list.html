@@ -14,7 +14,7 @@
     <h1 class="page-header"><i class="fa fa-cubes"></i> Типы оборудования</h1>
 
     <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_equipment' %}" role="button">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить единицу</a>  
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить новый тип</a>  
     
     <div class="table-responsive">
             <table class="table table-bordered table-hover " style=" font-size: 14px;" >
@@ -23,7 +23,6 @@
                             <th><center>#</center></th>
                             <th><center>Наименование</center></th>
                             <th><center>Модель</center></th>
-                            <!--<th><center>Инвентарный номер</center></th>                            -->
                             <th><center>Дата</center></th>
                             <th class="text-center">Действие</th>
                         </tr>
@@ -32,7 +31,7 @@
                             {% for item in equipment %}
                             <tr>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
-                                <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.group_name }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
                                 <!--<td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>-->
                                 <td style=" vertical-align: middle; "><small><center>{{ item.date }}</center></small></td>

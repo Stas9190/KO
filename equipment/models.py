@@ -3,13 +3,24 @@ from django.urls import reverse
 from django.utils import timezone
 from smart_selects.db_fields import ChainedManyToManyField
 
+# Исполнитель работ
+class Executor(models.Model):
+    executor = models.CharField('Исполнитель', max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'Executor'
+    
+    def __str__(self):
+        return self.executor
+
 # Узлы оборудования
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     id_unitgroup = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='id_unitGroup', verbose_name='Выбор группы')  # Field name made lowercase.
     name = models.CharField('Наименование', max_length=200)
     description = models.CharField('Описание работ', max_length=500)
-    executor = models.CharField('Исполнитель работ', max_length=200)
+    executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True, verbose_name='Исполнитель')
     time = models.DecimalField('Время выполнения (мин.)', max_digits=18, decimal_places=0)
     periodicity = models.DecimalField('Периодичность (дн.)', max_digits=18, decimal_places=0, blank=True, null=True)
     photo = models.FileField(upload_to='media/', max_length=50, blank=True, null=True, verbose_name='Изображение')
@@ -27,8 +38,8 @@ class Equipment(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('Наименование', max_length=50, blank=True, null=True)
     model = models.CharField('Модель', max_length=200)
-    #inv_number = models.CharField('Инвентарный номер', max_length=100)
-    date = models.DateTimeField()
+    group_name = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='group_name', blank=True, null=True, verbose_name='Наименование')
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -43,7 +54,7 @@ class Equipment(models.Model):
 # Группы узлов оборудования
 class Untigroup(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField('Наименование', max_length=50)
 
     class Meta:
         managed = False

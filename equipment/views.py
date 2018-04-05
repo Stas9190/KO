@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work
-from django.shortcuts import redirect
+from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work, Executor
+from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import CreateView
@@ -21,26 +21,40 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 styleSheet = getSampleStyleSheet()
 
 # Импортируем формы
-from .forms import equipmentForm, unitForm, equipForm, unitGroupForm
+from .forms import equipmentForm, unitForm, equipForm, unitGroupForm, executorForm
 
 def equipment_list(request):
     equipment = Equipment.objects.filter(date__lte=timezone.now()).order_by('date')
     return render(request, 'equipment_list.html', {'equipment': equipment})
 
+def executor_list(request):
+    executor = Executor.objects.all().order_by('executor')
+    return render(request, 'executor_list.html', {'executor': executor})
+
 def equipmentCreateView(request):
     if request.method == "POST":
         form  = equipmentForm(request.POST)
         if form.is_valid():
-            eq = Equipment()
-            eq.name = request.POST.get("name")
-            eq.model = request.POST.get("model")
-            #eq.inv_number = request.POST.get("inv_number")
-            eq.date = timezone.now()
-            eq.save()
+            form.save()
+            #eq = Equipment()
+            #eq.group_name = request.POST.get("group_name")
+            #eq.model = request.POST.get("model")
+            #eq.date = timezone.now()
+            #eq.save()
             return redirect("equipment_list")
     else:  
         form = equipmentForm
         return render(request, 'equipment_new.html', {'form': form})
+
+def executorCreateView(request):
+    if request.method == "POST":
+        form = executorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("executor_list")
+    else:
+        form = executorForm
+        return render(request, 'executor_new.html', {'form': form})
 
 def unitCreateView(request):
     if request.method == "POST":
@@ -73,8 +87,14 @@ def unitGroup(request):
 # Обновление
 class equipmentUpdateView(UpdateView):
     model = Equipment
-    fields = ['name', 'model',]
+    fields = ['group_name', 'model',]
     template_name = "edit.html"
+
+class executorUpdateView(UpdateView):
+    model = Executor
+    fields = ['executor',]
+    template_name = "edit.html"
+    success_url = reverse_lazy('executor_list')
 
 class unitUpdateView(UpdateView):
     model = Unit
@@ -82,11 +102,35 @@ class unitUpdateView(UpdateView):
     template_name = "edit.html"
     success_url = reverse_lazy('unit')
 
-class junctionsUpdateView(UpdateView):
-    model = Equip
-    fields = ['inv_number', 'equipment_id', 'units']
+class unitGroupUpdateView(UpdateView):
+    model = Untigroup
+    fields = ['name']
     template_name = "edit.html"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('unitGroup')
+
+def junctionsUpdate(request, pk):
+    if request.method == "POST":
+        instance = get_object_or_404(Equip, id = pk)
+        form = equipForm(request.POST or None, instance=instance)    
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        inv_number = Equip.objects.filter(pk=pk)
+        equipments = Equipment.objects.all()
+        units = Unit.objects.raw('Select u.id, u.id_unitGroup, u.name, ug.name [group] From Unit u INNER Join untiGroup ug on ug.id = u.id_unitGroup Order By ug.id')
+        groups = Untigroup.objects.all().order_by('id')
+        #form = equipForm
+        selectedEquip = Equipment.objects.raw('Select id From Equipment Where id in (Select equipment_id_id From equipment_equip where id = %s)', [pk])
+        tid = 0
+        for item in selectedEquip:
+            tid = item.id
+        checkedUnit = Unit.objects.raw('Select id From Unit where id in (Select unit_id From equipment_equip_units where equip_id = %s)', [pk])
+        uid = []
+        for item in checkedUnit:
+            uid.append(item.id)
+        context = {'groups': groups, 'units': units, 'equipments': equipments, 'inv_number': inv_number, 'selectedEquip': tid, 'checkedUnits': uid}
+        return render(request, 'equip_edit.html', context)
 
 # Удаление
 class equipmentDeleteView(DeleteView):
@@ -108,6 +152,11 @@ class unitGroupDeleteView(DeleteView):
     model = Untigroup
     template_name = "delete.html"
     success_url = reverse_lazy("unitGroup")
+
+class executorDeleteView(DeleteView):
+    model = Executor
+    template_name = "delete.html"
+    success_url = reverse_lazy("executor_list")
 
 # Создание привязки между узлами и оборудованием (EQUIP)!!!!!!
 def junctions(request):
@@ -134,7 +183,7 @@ def service(request):
     return render(request, 'serviceList.html', {'serviceList': serviceList})
 
 def maintenance(request, pk):
-    mList = Equip.objects.raw('Select eu.id, e.name e_name, u.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id WHERE ee.id = %s', [pk])
+    mList = Equip.objects.raw('Select ex.executor, eu.id, e.name e_name, u.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id LEFT JOIN Executor ex ON ex.id = u.executor WHERE ee.id = %s', [pk])
     context = {'pk': pk, 'mList': mList, 'MEDIA_URL': settings.MEDIA_URL}
     return render(request, 'maintenance.html', context)
     
@@ -277,7 +326,7 @@ class PdfPrint:
 def to_pdf(request, pk):
     response = HttpResponse(content_type='application/pdf')
     today = timezone.now()
-    filename = 'Карта обслуэживания' + today.strftime('%Y-%m-%d')
+    filename = 'Карта' + today.strftime('%Y-%m-%d')
     response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
     buffer = BytesIO()
     report = PdfPrint(buffer, 'A4')
