@@ -53,6 +53,7 @@ class Equipment(models.Model):
         return self.name
 
 # Таблица для хронения путей к фотографиям
+'''
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
     id_equipment = models.DecimalField(max_digits=18, decimal_places=0)
@@ -61,6 +62,17 @@ class Location(models.Model):
     class Meta:
         managed = False
         db_table = 'Location'
+'''
+
+class Location(models.Model):
+    id_equipment = models.ForeignKey(Equipment, on_delete = models.CASCADE, db_column='id_equipment')
+    #path = models.FileField(upload_to='media/', max_length=50, blank=True, null=True, verbose_name='Изображение')
+    path = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'Location'
+
 
 # Группы узлов оборудования
 class Untigroup(models.Model):

@@ -27,10 +27,9 @@
                     <h1 class="panel-title">Новый тип оборудования</h1>
             </div>
             <div class="panel-body">
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% for field in form %}
-                            <input type="hidden" value="{{ field.pk }}">
                             <div class="form-group has-feedback">
                                {{ field.label_tag }}
                                <br>
@@ -38,7 +37,7 @@
                             </div>
                             {% endfor %}
                             <div class="form-group has-feedback">
-                                <input type="file" name="photo" multiple accept="image/*" />
+                                <input type="file" name="path" multiple accept="image/*" />
                             </div>
                             <input type="submit" class="btn btn-lg btn-success" value="Добавить" />
                     </form>

@@ -37,25 +37,24 @@ def unit_catalog(request):
     unitCatalog = UnitCatalog.objects.all().order_by('pk')
     return render(request, 'unit_catalog.html', {'unitCatalog': unitCatalog})
 
+def handle_uploaded_file(f):
+     with open('equipment/media/media/'+f.name, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
 def equipmentCreateView(request):
     if request.method == "POST":
         form  = equipmentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            eq = Equipment.objects.all().order_by('-id')
-            for f in request.POST.getlist('photo'):
-                location = Location()
-                location.id_equipment = eq[0].id
-                location.path = "media/"+f
-                location.save()
-                #data = f.read()
-                #location = Location()
-                #location.image.save(1, ContentFile(data))
-                #location.save()
-            #eq.group_name = request.POST.get("group_name")
-            #eq.model = request.POST.get("model")
-            #eq.date = timezone.now()
-            #eq.save()
+            #eq = Equipment.objects.all().order_by('-id')
+            files = request.FILES.getlist('path')
+            for f in files:
+                handle_uploaded_file(f)
+                loc = Location()
+                loc.id_equipment = Equipment.objects.all().order_by('-id')[0]
+                loc.path = 'equipment/media/media/'+f.name
+                loc.save()
             return redirect("equipment_list")
     else:  
         form = equipmentForm
@@ -327,8 +326,8 @@ class PdfPrint:
 
         # Фото на стартовой странице
         photos = Location.objects.raw('Select id, path From [Location] Where id_equipment in (Select equipment_id_id From equipment_equip Where id = %s)', [pk])
-        I0 = Image('equipment/media/'+photos[0].path)
-        I1 = Image('equipment/media/'+photos[1].path)
+        I0 = Image(''+photos[0].path)
+        I1 = Image(''+photos[1].path)
         I0.drawHeight = 12*cm*I0.drawWidth / I0.drawWidth
         I0.drawWidth = 14*cm
         I1.drawHeight = 12*cm*I1.drawWidth / I1.drawWidth

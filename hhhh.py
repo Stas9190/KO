@@ -27,9 +27,18 @@ class Executor(models.Model):
         db_table = 'Executor'
 
 
+class Location(models.Model):
+    id_equipment = models.ForeignKey(Equipment, models.DO_NOTHING, db_column='id_equipment')
+    path = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'Location'
+
+
 class Unit(models.Model):
     id_unitgroup = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='id_unitGroup')  # Field name made lowercase.
-    name = models.CharField(max_length=200)
+    name = models.ForeignKey('UnitCatalog', models.DO_NOTHING, db_column='name')
     description = models.CharField(max_length=500)
     time = models.DecimalField(max_digits=18, decimal_places=0)
     periodicity = models.DecimalField(max_digits=18, decimal_places=0, blank=True, null=True)
@@ -40,6 +49,14 @@ class Unit(models.Model):
     class Meta:
         managed = False
         db_table = 'Unit'
+
+
+class UnitCatalog(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'Unit_catalog'
 
 
 class AuthGroup(models.Model):
@@ -174,7 +191,7 @@ class DjangoSession(models.Model):
 
 
 class EquipmentEquip(models.Model):
-    inv_number = models.CharField(max_length=100)
+    ktp_name = models.CharField(max_length=100)
     equipment_id = models.ForeignKey(Equipment, models.DO_NOTHING)
 
     class Meta:
