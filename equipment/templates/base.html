@@ -67,16 +67,17 @@
         <div class="sidebar">
             <ul class="sidebar-menu">
                 {% if user.is_staff %}
-               <li><a href="/"><i class="fa fa-gear"></i> КЕ</a></li>
+               <li><a href="/"><i class="fa fa-gear"></i> КТП</a></li>
                {% endif %}
-               <li><a href="/service"><i class="fa fa-book"></i> Карты обслуживания</a></li>
+               <!--<li><a href="/service"><i class="fa fa-book"></i> КТП</a></li>-->
                {% if user.is_staff %}
                <li class="treeview">
                   <a href="/"><i class="fa fa-book"></i><span>Справочники </span><i class="fa fa-angle-down"></i></a>
                   <ul class="menu">                      
                       <li><a href="/unitGroup"><i class="fa fa-gears"></i> Группы узлов</a></li>
                       <li><a href="/equipment_list"><i class="fa fa-cubes"></i> Типы оборудования</a></li>
-                      <li><a href="/unit"><i class="fa fa-gear"></i> Узлы оборудования</a></li>
+                      <li><a href="/unit_catalog"><i class="fa fa-book"></i> Узлы</a></li>
+                      <li><a href="/unit"><i class="fa fa-gear"></i> Работы к исполнению</a></li>
                       <li><a href="/executor_list"><i class="fa fa-users"></i> Исполнители работ</a></li>
                   </ul> 
                </li>

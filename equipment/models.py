@@ -18,7 +18,8 @@ class Executor(models.Model):
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     id_unitgroup = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='id_unitGroup', verbose_name='Выбор группы')  # Field name made lowercase.
-    name = models.CharField('Наименование', max_length=200)
+    #name = models.CharField('Наименование', max_length=200)
+    name = models.ForeignKey('UnitCatalog', models.DO_NOTHING, db_column='name', verbose_name='Наименование')
     description = models.CharField('Описание работ', max_length=500)
     executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True, verbose_name='Исполнитель')
     time = models.DecimalField('Время выполнения (мин.)', max_digits=18, decimal_places=0)
@@ -51,6 +52,16 @@ class Equipment(models.Model):
     def __str__(self):
         return self.name
 
+# Таблица для хронения путей к фотографиям
+class Location(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_equipment = models.DecimalField(max_digits=18, decimal_places=0)
+    path = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'Location'
+
 # Группы узлов оборудования
 class Untigroup(models.Model):
     id = models.AutoField(primary_key=True)
@@ -63,15 +74,31 @@ class Untigroup(models.Model):
     def __str__(self):
         return self.name
 
+#Справочник узлов оборудования
+class UnitCatalog(models.Model):
+    name = models.CharField('Наименование', max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'Unit_catalog'
+    
+    def __str__(self):
+        return self.name
+
 # Создаем новое оборудование и определяем связь с узлами
 class Equip(models.Model):
-    inv_number = models.CharField(max_length=100)
+    # Вместо инвентарного номера наименование КТП
+    ktp_name = models.CharField(max_length=100)
     equipment_id = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     units = models.ManyToManyField(
         Unit,
         through='EquipmentEquipUnits',
         through_fields=('equip', 'unit'),
     )
+
+    class Meta:
+        managed = False
+        db_table = 'equipment_equip'
 
 # Обслуживание
 class Maintenance(models.Model):

@@ -20,9 +20,9 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="inv_number">Инвентарный номер</label><br>
+                    <label for="ktp_name">Инвентарный номер</label><br>
                     {% for item in inv_number %}
-                    <input type="text" id="inv_number" name="inv_number" class="form-control" value="{{item.inv_number}}">
+                    <input type="text" id="ktp_name" name="ktp_name" class="form-control" value="{{item.ktp_name}}">
                     {% endfor %}
                 </div>
                 <div class="form-group has-feedback">                                

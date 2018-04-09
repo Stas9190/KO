@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work, Executor
+from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work, Executor, UnitCatalog, Location
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import DeleteView, UpdateView
@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from ko_project import settings
 from io import BytesIO
 import os
+from django.core.files.base import ContentFile
 
 #from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, A4, inch, landscape
@@ -21,7 +22,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 styleSheet = getSampleStyleSheet()
 
 # Импортируем формы
-from .forms import equipmentForm, unitForm, equipForm, unitGroupForm, executorForm
+from .forms import equipmentForm, unitForm, equipForm, unitGroupForm, executorForm, unitCatalogForm
 
 def equipment_list(request):
     equipment = Equipment.objects.filter(date__lte=timezone.now()).order_by('date')
@@ -31,12 +32,26 @@ def executor_list(request):
     executor = Executor.objects.all().order_by('executor')
     return render(request, 'executor_list.html', {'executor': executor})
 
+#справочник узлов оборудования
+def unit_catalog(request):
+    unitCatalog = UnitCatalog.objects.all().order_by('pk')
+    return render(request, 'unit_catalog.html', {'unitCatalog': unitCatalog})
+
 def equipmentCreateView(request):
     if request.method == "POST":
-        form  = equipmentForm(request.POST)
+        form  = equipmentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            #eq = Equipment()
+            eq = Equipment.objects.all().order_by('-id')
+            for f in request.POST.getlist('photo'):
+                location = Location()
+                location.id_equipment = eq[0].id
+                location.path = "media/"+f
+                location.save()
+                #data = f.read()
+                #location = Location()
+                #location.image.save(1, ContentFile(data))
+                #location.save()
             #eq.group_name = request.POST.get("group_name")
             #eq.model = request.POST.get("model")
             #eq.date = timezone.now()
@@ -76,6 +91,17 @@ def unitGroupCreateView(request):
         form = unitGroupForm
         return render(request, 'unitGroup_new.html', {'form': form})
 
+def unitCatalogCreateView(request):
+    if request.method == "POST":
+        form = unitCatalogForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("unit_catalog")
+    else:
+        form = unitCatalogForm
+        return render(request, 'unitCatalog_new.html', {'form': form})
+
+
 def unit_list(request):
     unit = Unit.objects.filter(date__lte=timezone.now()).order_by('date')
     return render(request, 'unit_list.html', {'unit': unit}) 
@@ -107,6 +133,12 @@ class unitGroupUpdateView(UpdateView):
     fields = ['name']
     template_name = "edit.html"
     success_url = reverse_lazy('unitGroup')
+
+class unitCatalogUpdateView(UpdateView):
+    model = UnitCatalog
+    fields = ['name']
+    template_name = "edit.html"
+    success_url = reverse_lazy('unit_catalog')
 
 def junctionsUpdate(request, pk):
     if request.method == "POST":
@@ -153,6 +185,11 @@ class unitGroupDeleteView(DeleteView):
     template_name = "delete.html"
     success_url = reverse_lazy("unitGroup")
 
+class unitCatalogDeleteView(DeleteView):
+    model = UnitCatalog
+    template_name = "delete.html"
+    success_url = reverse_lazy("unit_catalog")
+
 class executorDeleteView(DeleteView):
     model = Executor
     template_name = "delete.html"
@@ -160,7 +197,7 @@ class executorDeleteView(DeleteView):
 
 # Создание привязки между узлами и оборудованием (EQUIP)!!!!!!
 def junctions(request):
-    equipList = Equip.objects.raw('SELECT ee.id, e.name name, e.model model, ee.inv_number inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id')
+    equipList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u on e.group_name = u.id')
     return render(request, 'junctions.html', {'equipList': equipList})
 
 def new_junctions(request):
@@ -179,11 +216,12 @@ def new_junctions(request):
     
 # Карты обслуживания
 def service(request):
-    serviceList = Equip.objects.raw('SELECT ee.id, e.name, ee.inv_number, e.model FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id')
+    serviceList = Equip.objects.raw('SELECT ee.id, e.name, ee.ktp_name inv_number, e.model FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id')
     return render(request, 'serviceList.html', {'serviceList': serviceList})
 
 def maintenance(request, pk):
-    mList = Equip.objects.raw('Select ex.executor, eu.id, e.name e_name, u.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id LEFT JOIN Executor ex ON ex.id = u.executor WHERE ee.id = %s', [pk])
+    #mList = Equip.objects.raw('Select ex.executor, eu.id, e.name e_name, u.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id LEFT JOIN Executor ex ON ex.id = u.executor WHERE ee.id = %s', [pk])
+    mList = Equip.objects.raw('Select ex.executor, eu.id, ug.name e_name, uc.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id LEFT JOIN Executor ex ON ex.id = u.executor INNER JOIN untiGroup ug ON ug.id = e.group_name INNER JOIN Unit_catalog uc ON uc.id = u.name WHERE ee.id = %s', [pk])
     context = {'pk': pk, 'mList': mList, 'MEDIA_URL': settings.MEDIA_URL}
     return render(request, 'maintenance.html', context)
     
@@ -240,7 +278,7 @@ class PdfPrint:
         P82 = Paragraph(''' <font face="Arial"><i>Измен.</i></font>''', styleSheet["BodyText"])
         # create document
         elements = []
-        data= [[pk,'','','','',P50,'',P70,'',],
+        data= [['','','','','',P50,'',P70,'',],
                [P01,'','','','','','','','',],
                [P02,'','','',P42,P52,P62,'',P82,],
                ['','','','','','','','','',],
@@ -287,8 +325,22 @@ class PdfPrint:
         t._argH[6]=0.7*cm
         elements.append(t)
 
+        # Фото на стартовой странице
+        photos = Location.objects.raw('Select id, path From [Location] Where id_equipment in (Select equipment_id_id From equipment_equip Where id = %s)', [pk])
+        I0 = Image('equipment/media/'+photos[0].path)
+        I1 = Image('equipment/media/'+photos[1].path)
+        I0.drawHeight = 12*cm*I0.drawWidth / I0.drawWidth
+        I0.drawWidth = 14*cm
+        I1.drawHeight = 12*cm*I1.drawWidth / I1.drawWidth
+        I1.drawWidth = 14*cm
+        headerData = [[I0, I1,],]
+        headerTable = Table(headerData, style=[
+            ('GRID', (0,0),(-1,-1), 0.25, colors.white),
+        ])
+        elements.append(headerTable)
+
         # Запрос к бд
-        mList = Equip.objects.raw('Select eu.id, e.name e_name, e.model, u.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id WHERE ee.id = %s', [pk])
+        mList = Equip.objects.raw('Select eu.id, e.name e_name, e.model, uc.name u_name, u.description, u.time, u.periodicity, u.photo, eu.fact FROM equipment_equip_units eu INNER JOIN equipment_equip ee ON ee.id = eu.equip_id INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN Unit u ON u.id = eu.unit_id INNER JOIN Unit_catalog uc on u.name = uc.id WHERE ee.id = %s', [pk])
         i = 1
         for item in mList:
             P20 = Paragraph('<font face="Arial">'+item.u_name+'</font>', styleSheet["BodyText"])

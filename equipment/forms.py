@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Equipment, Unit, Untigroup, Equip, Executor
+from .models import Equipment, Unit, Untigroup, Equip, Executor, UnitCatalog
 
 class executorForm(forms.ModelForm):
 
@@ -35,7 +35,7 @@ class unitForm(forms.ModelForm):
             'photo': 'Изображение',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'name': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'executor': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'time':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
@@ -50,12 +50,12 @@ class equipForm(forms.ModelForm):
         model = Equip
         fields = '__all__'
         labels = {
-            'inv_number': 'Инвентарный номер',
+            'ktp_name': 'Наименование ктп',
             'equipment_id': 'Тип оборудования',
             'units': 'Модуль оборудования',
         }
         widgets = {
-            'inv_number': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'ktp_name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'equipment_id': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'units': forms.CheckboxSelectMultiple(),
         }
@@ -64,6 +64,18 @@ class unitGroupForm(forms.ModelForm):
 
     class Meta:
         model = Untigroup
+        fields = '__all__'
+        labels = {
+            'name': 'Наименование'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
+
+class unitCatalogForm(forms.ModelForm):
+
+    class Meta:
+        model = UnitCatalog
         fields = '__all__'
         labels = {
             'name': 'Наименование'

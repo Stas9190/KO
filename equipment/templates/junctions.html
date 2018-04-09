@@ -10,7 +10,7 @@ body {
 }
 </style>
 
-        <h1 class="page-header"><i class="fa fa-gear"></i> КЕ</h1>
+        <h1 class="page-header"><i class="fa fa-gear"></i> КТП</h1>
 
         <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_junctions' %}" role="button">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое</a>
@@ -31,7 +31,7 @@ body {
                                     {% for item in equipList %}
                                     <tr>
                                         <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
-                                        <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
+                                        <td style=" vertical-align: middle; "><small><center><a href="{% url 'maintenance' item.pk %}">{{ item.name }}</a></center></small></td>
                                         <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
                                         <!--<td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>-->
                                         <td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>

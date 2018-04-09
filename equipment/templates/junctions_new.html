@@ -24,25 +24,22 @@
     <div class="col-sm-5 col-sm-offset-0 left_krai">
         <div class="panel panel-info">
             <div class="panel-heading panel-title">
-                    <h1 class="panel-title">Создать КЕ</h1>
+                    <h1 class="panel-title">Создать КТП</h1>
             </div>
             <div class="panel-body">
                     <form method="POST">
                             {% csrf_token %}
                             <div class="form-group has-feedback">                                
-                                {{ form.inv_number.label }}
+                                <b>{{ form.ktp_name.label }}</b>
                                 <br>
-                                {{ form.inv_number }}
+                                {{ form.ktp_name }}
                             </div>
                             <div class="form-group has-feedback">                                
-                                    <!--{{ form.equipment_id.label }}
-                                    <br>
-                                    {{ form.equipment_id }}-->
-                                    Тип оборудования
-                                    <select name="equipment_id" class="form-control selectpicker show-tick">
+                                    <label for="equipment_id">Тип оборудования</label>
+                                    <select name="equipment_id" id="equipment_id" class="form-control selectpicker show-tick">
                                         <option value="" disabled selected>Выберите оборудование</option>
                                         {% for e in equipments %}
-                                            <option value="{{ e.id }}">Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                            <option value="{{ e.id }}">Тип: {{ e.group_name }} | Модель: {{ e.model }}</option>
                                         {% endfor %}
                                     </select>
                             </div>
