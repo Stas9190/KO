@@ -45,6 +45,7 @@ class Unit(models.Model):
     photo = models.CharField(max_length=50, blank=True, null=True)
     date = models.DateTimeField(blank=True, null=True)
     executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True)
+    notes = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -203,6 +204,7 @@ class EquipmentEquipUnits(models.Model):
     equip = models.ForeignKey(EquipmentEquip, models.DO_NOTHING)
     unit = models.ForeignKey(Unit, models.DO_NOTHING)
     fact = models.IntegerField()
+    order = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

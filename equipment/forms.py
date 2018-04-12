@@ -15,7 +15,12 @@ class equipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = ('group_name', 'model',)
+        fields = ('group_name', 'model', 'photo',)
+        labels = {
+            'group_name' : 'Наименование',
+            'model' : 'Модель',
+            'photo' : 'Изображение'
+        }
         widgets = {
             'group_name': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'model': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
@@ -25,13 +30,15 @@ class unitForm(forms.ModelForm):
 
     class Meta:
         model = Unit
-        fields = ('name', 'id_unitgroup', 'description', 'executor', 'time', 'periodicity', 'photo')
+        fields = ('name', 'id_unitgroup', 'description', 'executor', 'time', 'periodicity', 'notes', 'tools', 'photo')
         labels = {
             'name': 'Наименование',
             'id_unitgroup': 'Выбор группы',
             'description': 'Описание работ',
             'time': 'Время выполнения (мин)',
             'periodicity': 'Периодичность выполнения (дн)',
+            'notes': 'Примечания',
+            'tools': 'Инструмент, материалы',
             'photo': 'Изображение',
         }
         widgets = {
@@ -40,8 +47,9 @@ class unitForm(forms.ModelForm):
             'executor': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'time':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
             'periodicity':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
-            'id_unitgroup': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
-            #'time': forms.Input(attrs={'class': 'form-control', 'required': True}),
+            'notes':forms.TextInput(attrs={'class': 'form-control',}),
+            'tools':forms.TextInput(attrs={'class': 'form-control',}),
+            'id_unitgroup': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),            
         }
 
 class equipForm(forms.ModelForm):

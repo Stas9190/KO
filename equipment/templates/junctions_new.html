@@ -54,6 +54,7 @@
                                         {% for u in units %}
                                             {% if u.group == gr.name %}
                                                 <input type="checkbox" name="units" value="{{u.id}}"> {{u.name}} <br>
+                                                <!--<input type="hidden" name="order" value="{{forloop.counter}}" />-->
                                             {% endif %}
                                         {% endfor %}
                                     {% endfor %}

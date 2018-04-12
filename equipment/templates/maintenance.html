@@ -18,13 +18,14 @@
                     <thead>
                         <tr>
                             <th><center>#</center></th>
-                            <th><center>Наименование</center></th>
-                            <th><center>Модуль</center></th>
+                            <th><center>Группа</center></th>
+                            <th><center>Тип оборудования</center></th>
                             <th><center>Выполняемые работы</center></th>
                             <th><center>Время выполнения (мин.)</center></th> 
                             <th><center>Исполнитель работ</center></th>
                             <th><center>Периодичность выполнения (дн.)</center></th>
-                            <!--<th><center>Наработано</center></th>-->
+                            <th><center>Примечания</center></th>
+                            <th><center>Инструмент, материалы</center></th>
                             <th><center>Изображение</center></th>
                             <!--<th><center>Действие</center></th>-->
                         </tr>
@@ -42,7 +43,9 @@
                                 <td style=" vertical-align: middle; "><small><center>{{ item.description }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.time }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.executor }}</center></small></td>
-                                <td style=" vertical-align: middle; "><small><center>{{ item.periodicity }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{% if item.periodicity %}{{ item.periodicity }}{% endif %}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{% if item.notes %} {{ item.notes }} {% endif %}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{% if item.tools %} {{ item.tools }} {% endif %}</center></small></td>
                                 <!--<td style=" vertical-align: middle; "><small><center>{{ item.fact }}</center></small></td>-->
                                 <td style=" vertical-align: middle; "><small><center><img src="{{MEDIA_URL}}{{item.photo}}" style="width: 250px; height:250px;" alt=""></center></small></td>
                                 <!--<td>

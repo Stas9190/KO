@@ -14,7 +14,7 @@
 <div class="col-sm-5 col-sm-offset-0 left_krai">
     <div class="panel panel-info">
         <div class="panel-heading panel-title">
-            <h1 class="panel-title">Редактирование КЕ</h1>
+            <h1 class="panel-title">Редактирование КТП</h1>
         </div>
         <div class="panel-body">
             <form action="" method="POST">
@@ -31,9 +31,9 @@
                             <option value="" disabled selected>Выберите оборудование</option>
                             {% for e in equipments %}
                                 {% if e.id == selectedEquip %}
-                                    <option value="{{ e.id }}" selected>Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                    <option value="{{ e.id }}" selected>Тип: {{ e.group_name }} | Модель: {{ e.model }}</option>
                                 {% else %}
-                                    <option value="{{ e.id }}" >Тип: {{ e.name }} | Модель: {{ e.model }}</option>
+                                    <option value="{{ e.id }}" >Тип: {{ e.group_name }} | Модель: {{ e.model }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -63,11 +63,46 @@
                 <button class="btn btn-lg btn-success" type="submit">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Обновить
                 </button>
-                <!--<a class="btn btn-lg btn-success" href="/">
-                        <span  class="fa fa-copy" aria-hidden="true"></span> Копировать
-                </a>-->
             </form>
         </div>
     </div>
 </div>
+
+<div class="col-sm-4 col-sm-offset-0 left_krai">
+        <div class="panel panel-info">
+            <div class="panel-heading panel-title">
+                <h1 class="panel-title">Порядок выполнения работ</h1>
+            </div>
+            <div class="panel-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group has-feedback" style="margin-top: 50px; margin-left: 10px;">
+                            <table border=0>
+                            {% for u in selected_units %}
+                                <tr>
+                                    <td style="vertical-align: middle; padding: 5px; padding-right: 10px;">{{u.name}}</td>
+                                    <td>
+                                        <input type="hidden" value="{{ u.pk }}" />
+                                        <input type="hidden" name="eeu_id" value="{{ u.id }}" />
+                                        <select name="order" id="orders" class="form-control selectpicker show-tick" onchange="Order(this.value);" onclick="currentVal(this.value);">
+                                            {% for n in selected_units %}
+                                                {% if n.order == u.order%}
+                                                    <option value="{{ n.order }}" selected>{{ n.order }}</option>
+                                                {% else %}
+                                                    <option value="{{ n.order }}" >{{ n.order }}</option>
+                                                {% endif %}
+                                            {% endfor %}                                        
+                                        </select>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </table>
+                     </div>
+                    <button class="" type="submit" name="changeOrder" style="width: 50px;">
+                            <span class="" aria-hidden="true"></span> ОК
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
