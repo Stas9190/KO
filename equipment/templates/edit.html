@@ -17,7 +17,7 @@
             <h1 class="panel-title">Редактирование</h1>
         </div>
         <div class="panel-body">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-group">

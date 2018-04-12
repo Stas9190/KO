@@ -121,7 +121,7 @@ def unitGroup(request):
 # Обновление
 class equipmentUpdateView(UpdateView):
     model = Equipment
-    fields = ['group_name', 'model', 'photo']
+    fields = ['group_name', 'model', 'photo',]
     template_name = "edit.html"
 
 class executorUpdateView(UpdateView):
@@ -379,7 +379,9 @@ class PdfPrint:
             P51 = Paragraph('<font face="Arial">'+str(item.time)+' мин</font>', styleSheet["BodyText"])
 
             I = Image('equipment/media/'+item.photo)
-            I.drawHeight = 9*cm*I.drawHeight / I.drawWidth
+            #I.drawHeight = 10*cm*I.drawHeight / I.drawWidth
+            A4_width = 21*cm
+            I.drawHeight = (A4_width / 2) - 2*cm
             I.drawWidth = 9*cm
             contentData = [[i,I,P20,'','','',],
                            ['','',P21,P31,P41,P51,],

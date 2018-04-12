@@ -17,7 +17,7 @@ class equipmentForm(forms.ModelForm):
         model = Equipment
         fields = ('group_name', 'model', 'photo',)
         labels = {
-            'group_name' : 'Наименование',
+            'group_name' : 'Группа оборудования',
             'model' : 'Модель',
             'photo' : 'Изображение'
         }
@@ -32,7 +32,7 @@ class unitForm(forms.ModelForm):
         model = Unit
         fields = ('name', 'id_unitgroup', 'description', 'executor', 'time', 'periodicity', 'notes', 'tools', 'photo')
         labels = {
-            'name': 'Наименование',
+            'name': 'Узел',
             'id_unitgroup': 'Выбор группы',
             'description': 'Описание работ',
             'time': 'Время выполнения (мин)',
@@ -45,10 +45,10 @@ class unitForm(forms.ModelForm):
             'name': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'executor': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
-            'time':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
-            'periodicity':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0}),
+            'time':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0, 'value': 0,}),
+            'periodicity':forms.NumberInput(attrs={'step': 1, 'class': 'form-control', 'required': True, 'min': 0, 'value': 0,}),
             'notes':forms.TextInput(attrs={'class': 'form-control',}),
-            'tools':forms.TextInput(attrs={'class': 'form-control',}),
+            'tools':forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'id_unitgroup': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),            
         }
 

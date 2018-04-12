@@ -18,7 +18,7 @@ class Executor(models.Model):
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     id_unitgroup = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='id_unitGroup', verbose_name='Выбор группы')
-    name = models.ForeignKey('UnitCatalog', models.DO_NOTHING, db_column='name', verbose_name='Наименование')
+    name = models.ForeignKey('UnitCatalog', models.DO_NOTHING, db_column='name', verbose_name='Узел')
     description = models.CharField('Описание работ', max_length=500)
     executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True, verbose_name='Исполнитель')
     time = models.DecimalField('Время выполнения (мин.)', max_digits=18, decimal_places=0)
@@ -38,9 +38,9 @@ class Unit(models.Model):
 # Типы оборудования
 class Equipment(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField('Наименование', max_length=50, blank=True, null=True)
+    name = models.CharField('Группа оборудования', max_length=50, blank=True, null=True)
     model = models.CharField('Модель', max_length=200)
-    group_name = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='group_name', blank=True, null=True, verbose_name='Наименование')
+    group_name = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='group_name', blank=True, null=True, verbose_name='Группа оборудования')
     date = models.DateTimeField(auto_now_add=True)
     photo = models.FileField(upload_to='media/', max_length=50, blank=True, null=True, verbose_name='Изображение')
 
