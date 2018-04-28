@@ -374,6 +374,8 @@ class PdfPrint:
             P21 = Paragraph('<font face="Arial">'+item.executor+'</font>', styleSheet["BodyText"])
             if item.periodicity == 0 or item.periodicity == '':
                 P41 = Paragraph('<font face="Arial">'+item.notes+'</font>', styleSheet["BodyText"])
+            elif item.periodicity == 0 and item.notes is null:
+                P41 = '-'
             else:
                 P41 = item.periodicity
             P51 = Paragraph('<font face="Arial">'+str(item.time)+' мин</font>', styleSheet["BodyText"])

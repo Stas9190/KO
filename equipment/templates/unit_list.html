@@ -16,11 +16,13 @@ body {
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить</a>  
     
     <div class="table-responsive">
-            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+            <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info" style=" font-size: 14px;" >
                     <thead>
                         <tr>
                             <th><center>#</center></th>
+                            <th><center>Изображение</center></th>
                             <th><center>Узел</center></th>
+                            <th><center>Группа</center></th>
                             <th><center>Описание работ</center></th>
                             <th><center>Время выполнения (мин.)</center></th>                            
                             <th><center>Периодичность выполнения (дн.)</center></th>
@@ -31,7 +33,9 @@ body {
                             {% for item in unit %}
                             <tr>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center><img src="{{MEDIA_URL}}{{item.photo}}" style="width: 150px; height:150px;" alt=""></center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.name }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.id_unitgroup }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.description }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{{ item.time }}</center></small></td>
                                 <td style=" vertical-align: middle; "><small><center>{% if item.periodicity %}{{ item.periodicity }}{% else %}{{ item.notes }}{% endif %}</center></small></td>

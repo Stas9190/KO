@@ -23,7 +23,7 @@ class Unit(models.Model):
     executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True, verbose_name='Исполнитель')
     time = models.DecimalField('Время выполнения (мин.)', max_digits=18, decimal_places=0)
     periodicity = models.DecimalField('Периодичность (дн.)', max_digits=18, decimal_places=0, blank=True, null=True)
-    photo = models.FileField(upload_to='media/', max_length=50, blank=True, null=True, verbose_name='Изображение')
+    photo = models.FileField(upload_to='media/', max_length=50, blank=True, null=True, verbose_name='Изображение',)
     date = models.DateTimeField(auto_now_add=True)
     notes = models.CharField('Примечания', max_length=50, blank=True, null=True)
     tools = models.CharField('Инструменты', max_length=100, blank=True, null=True)
