@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-        body {
-              padding-top: 45px;
-            }
-        
-            .btn_in_bottom {
-                margin-bottom: 25px;
-            }
-</style>
      
-    <h1 class="page-header"><i class="fa fa-users"></i> Исполнители работ</h1>
+<h1 class="page-header"><i class="fa fa-users"></i> Исполнители работ</h1>
 
-    <a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_executor' %}" role="button">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить исполнителя</a>  
+<a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_executor' %}" role="button">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить исполнителя</a>  
     
-    <div class="table-responsive">
-            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">    
+            <table id="table" class="table table-bordered table-hover " style=" font-size: 14px;" >
                     <thead>
                         <tr>
                             <th><center>#</center></th>
@@ -40,6 +35,9 @@
                             {% endfor %} 
                     </tbody>
             </table>
+            </div>
+        </div>
     </div>
+</div>
 
 {% endblock content %}

@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-        body {
-              padding-top: 45px;
-            }
-        
-            .btn_in_bottom {
-                margin-bottom: 25px;
-            }
-</style>
      
-    <h1 class="page-header"><i class="fa fa-cubes"></i> КТП</h1>
+<h1 class="page-header"><i class="fa fa-cubes"></i> КТП</h1>
 
-    <div class="table-responsive">
-            <table class="table table-bordered table-hover " style=" font-size: 14px;" >
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+            <table id="maintenance_table" class="table table-bordered table-hover " style=" font-size: 14px;" >
                     <thead>
                         <tr>
                             <th><center>#</center></th>
@@ -64,6 +58,9 @@
                     </tbody>
             </table>
             <a href="{% url 'to_pdf' pk %}">Генерировать PDF</a>
+            </div>
+        </div>
     </div>
+</div>
 
 {% endblock content %}
