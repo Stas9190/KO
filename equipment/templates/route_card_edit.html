@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-sm-5 col-sm-offset-0 left_krai">
+    <div class="panel panel-info">
+        <div class="panel-heading panel-title">
+            <h1 class="panel-title">Редактирование маршрутной карты</h1>
+        </div>
+        <div class="panel-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Наименование маршрутной карты</label><br>
+                    {% for item in name %}
+                    <input type="text" id="name" name="name" class="form-control" value="{{item.name}}">
+                    {% endfor %}
+                </div>
+                <div class="form-group has-feedback" style="margin-top: 10px; margin-left: 10px;">
+                    <b>КТП:</b><br>
+                    {% for item in all_ktp %}
+                        {% if item.id in checkedEquip %}
+                            <input type="checkbox" name="ktp" value="{{item.id}}" checked> {{item.ktp_name}} <br>
+                        {% else %}
+                            <input type="checkbox" name="ktp" value="{{item.id}}"> {{item.ktp_name}} <br>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+                <button class="btn btn-lg btn-success" type="submit">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Обновить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

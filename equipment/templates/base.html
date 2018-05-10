@@ -62,10 +62,11 @@
         <section class="sidebar">
             <ul class="sidebar-menu" data-widget="tree">
                 {% if user.is_staff %}
+                <li class="active"><a href="/route_card"><i class="fa fa-table"></i> <span>Маршрутные карты</span></a></li>
                 <li class="active"><a href="/"><i class="fa fa-gear"></i> <span>КТП</span></a></li>
                 {% endif %}
                 {% if user.is_staff %}
-                <li class="treeview">
+                <li class="active treeview menu-open">
                    <a href="/"><i class="fa fa-book"></i><span>Справочники </span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
@@ -117,6 +118,9 @@
 <script src="{% static 'AdminLTE/bower_components/fastclick/lib/fastclick.js' %}"></script>
 
 <script src="{% static 'AdminLTE/dist/js/adminlte.min.js' %}"></script>
+
+<script src="{% static 'scripts/script.js' %}"></script>
+
 <script>
         $(function () {
           $('#table').DataTable({

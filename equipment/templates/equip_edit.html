@@ -11,7 +11,7 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="ktp_name">Инвентарный номер</label><br>
+                    <label for="ktp_name">Наименование КТП</label><br>
                     {% for item in inv_number %}
                     <input type="text" id="ktp_name" name="ktp_name" class="form-control" value="{{item.ktp_name}}">
                     {% endfor %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work, Executor, UnitCatalog, Location
+from .models import Equipment, Unit, Untigroup, Equip, EquipmentEquipUnits as eeu, Work, Executor, UnitCatalog, Location, RouteCards, RouteCardsEquipmentEquip as rcee
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import DeleteView, UpdateView
@@ -21,7 +21,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 styleSheet = getSampleStyleSheet()
 
 # Импортируем формы
-from .forms import equipmentForm, unitForm, equipForm, unitGroupForm, executorForm, unitCatalogForm
+from .forms import equipmentForm, unitForm, equipForm, unitGroupForm, executorForm, unitCatalogForm, routeCardForm
 
 def equipment_list(request):
     equipment = Equipment.objects.filter(date__lte=timezone.now()).order_by('date')
@@ -30,6 +30,10 @@ def equipment_list(request):
 def executor_list(request):
     executor = Executor.objects.all().order_by('executor')
     return render(request, 'executor_list.html', {'executor': executor})
+
+def route_card_list(request):
+    route_cards = RouteCards.objects.all().order_by('id')
+    return render(request, 'route_card.html', {'route_cards': route_cards})
 
 #справочник узлов оборудования
 def unit_catalog(request):
@@ -187,6 +191,29 @@ def junctionsUpdate(request, pk):
         context = {'groups': groups, 'units': units, 'equipments': equipments, 'inv_number': inv_number, 'selectedEquip': tid, 'checkedUnits': uid, 'selected_units': selected_units}
         return render(request, 'equip_edit.html', context)
 
+def routeCardsUpdate(request, pk):
+    if request.method == "POST":
+        instance = get_object_or_404(RouteCards, id = pk)
+        form = routeCardForm(request.POST or None, instance=instance)
+        if form.is_valid:
+            form.save()
+            rcee_obj = rcee.objects.filter(id_route_card = pk).order_by('id')
+            return redirect("route_card")
+    else:
+        #Все доступные ктп
+        all_ktp = Equip.objects.all()
+        #Имя редактируемой маршрутной карты
+        name = RouteCards.objects.filter(pk=pk)
+        #Ктп входящие в состав маршрутной карты
+        checkedEquip = Equip.objects.raw('Select id From equipment_equip where id in (Select id_equipment_equip From route_cards_equipment_equip where id_route_card = %s)', [pk])
+        #Формируем из них массив
+        eid = []
+        for item in checkedEquip:
+            eid.append(item.id)
+        # Передаем на форму
+        context = {'name': name, 'checkedEquip': eid, 'all_ktp': all_ktp}
+        return render(request, 'route_card_edit.html', context)
+
 # Удаление
 class equipmentDeleteView(DeleteView):
     model = Equipment
@@ -202,6 +229,11 @@ class junctionsDeleteView(DeleteView):
     model = Equip
     template_name = "delete.html"
     success_url = reverse_lazy('home')
+
+class routeCardDeleteView(DeleteView):
+    model = RouteCards
+    template_name = "delete.html"
+    success_url = reverse_lazy("route_card")
 
 class unitGroupDeleteView(DeleteView):
     model = Untigroup
@@ -223,6 +255,11 @@ def junctions(request):
     equipList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u on e.group_name = u.id')
     return render(request, 'junctions.html', {'equipList': equipList})
 
+# Список и ссылки на ктп, которые входят в состав маршрутной карты
+def ktp_in_route_card(request, pk):
+    ktpList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u ON e.group_name = u.id INNER JOIN route_cards_equipment_equip r ON r.id_equipment_equip = ee.id WHERE r.id_route_card = %s', [pk])
+    return render (request, 'junctions.html', {'equipList': ktpList})
+
 def new_junctions(request):
     if request.method == "POST":
         form = equipForm(request.POST)
@@ -242,6 +279,23 @@ def new_junctions(request):
         form = equipForm
         context = {'form': form, 'groups': groups, 'units': units, 'equipments': equipments}
         return render(request, 'junctions_new.html', context)
+
+# Новая маршрутная карта
+def new_route_card(request):
+    if request.method == "POST":
+        form = routeCardForm(request.POST)
+        if form.is_valid():
+            equip = request.POST.getlist('ktp')
+            route_card = RouteCards.objects.create(name=request.POST.get("name"))
+            for item in equip:
+                rcee_model = rcee(id_route_card=route_card, id_equipment_equip=Equip.objects.get(pk=item))
+                rcee_model.save()
+            return redirect("route_card")
+    else:
+        ktp = Equip.objects.all()
+        form = routeCardForm
+        context = {'form': form, 'ktp': ktp}
+        return render(request, 'route_card_new.html', context)
     
 # Карты обслуживания
 def service(request):

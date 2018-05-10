@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="page-header"><i class="fa fa-table"></i> Маршрутные карты</h1>
+
+<a class="btn btn-md btn-primary btn_in_bottom" href="{% url 'new_route_card' %}" role="button">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить</a>  
+    
+<div class="row">
+<div class="col-xs-12">
+<div class="box">
+        <div class="box-body">
+            <table id="table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info" style=" font-size: 14px;" >
+                    <thead>
+                        <tr>
+                            <th><center>#</center></th>
+                            <th><center>Наименование</center></th>
+                            <th class="text-center">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for item in route_cards %}
+                            <tr>
+                                <td style=" vertical-align: middle; "><small><center>{{ item.pk }}</center></small></td>
+                                <td style=" vertical-align: middle; "><small><center><a href="{% url 'ktp_in_route_card' item.pk %}">{{ item.name }}</a></center></small></td>
+                                <td class="text-center">
+                                        <div class="btn-group btn-group-xs ">
+                                                <a href="{% url 'route_card_edit' item.pk %}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                <a href="{% url 'route_card_delete' item.pk  %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                </td>
+                            </tr>
+                            {% endfor %} 
+                    </tbody>
+            </table>
+        </div>
+</div>
+</div> 
+</div>
+
+{% endblock content %}

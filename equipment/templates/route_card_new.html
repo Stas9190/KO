@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>   
+    
+        .left_krai {
+            padding-left: 0px;
+        }
+        
+        .interval {
+            margin-bottom: -20px;
+        }
+    
+        textarea {
+        resize: none; /* Запрещаем изменять размер */
+       } 
+    
+</style>
+
+    <div class="col-sm-5 col-sm-offset-0 left_krai">
+        <div class="panel panel-info">
+            <div class="panel-heading panel-title">
+                    <h1 class="panel-title">Создать Маршрутную карту</h1>
+            </div>
+            <div class="panel-body">
+                    <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group has-feedback">                                
+                                <b>{{ form.name.label }}</b>
+                                <br>
+                                {{ form.name }}
+                            </div>
+                            <div class="form-group has-feedback" style="margin-top: 10px; margin-left: 10px;">                                
+                                    <b>КТП:</b><br>
+                                    <table border=0>
+                                    <tr>
+                                    {% for item in ktp %}
+                                        <input type="checkbox" name="ktp" value="{{item.id}}"> {{item.ktp_name}} <br>
+                                    {% endfor %}
+                                    </td>
+                                    </tr>
+                                    </table>
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-success" value="Создать" />
+                    </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -13,6 +13,7 @@ class Equipment(models.Model):
     model = models.CharField(max_length=200)
     date = models.DateTimeField()
     group_name = models.ForeignKey('Untigroup', models.DO_NOTHING, db_column='group_name', blank=True, null=True)
+    photo = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -46,6 +47,7 @@ class Unit(models.Model):
     date = models.DateTimeField(blank=True, null=True)
     executor = models.ForeignKey(Executor, models.DO_NOTHING, db_column='executor', blank=True, null=True)
     notes = models.CharField(max_length=50, blank=True, null=True)
+    tools = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -227,6 +229,31 @@ class Maintenance(models.Model):
     class Meta:
         managed = False
         db_table = 'maintenance'
+
+
+class RouteCards(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'route_cards'
+
+
+class RouteCardsEquipmentEquip(models.Model):
+    id_route_card = models.ForeignKey(RouteCards, models.DO_NOTHING, db_column='id_route_card')
+    id_equipment_equip = models.ForeignKey(EquipmentEquip, models.DO_NOTHING, db_column='id_equipment_equip')
+
+    class Meta:
+        managed = False
+        db_table = 'route_cards_equipment_equip'
+
+
+class TestTable1(models.Model):
+    text = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'test_table_1'
 
 
 class Untigroup(models.Model):

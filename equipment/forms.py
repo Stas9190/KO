@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Equipment, Unit, Untigroup, Equip, Executor, UnitCatalog
+from .models import Equipment, Unit, Untigroup, Equip, Executor, UnitCatalog, RouteCards
 
 class executorForm(forms.ModelForm):
 
@@ -67,6 +67,21 @@ class equipForm(forms.ModelForm):
             'equipment_id': forms.Select(attrs={'class': 'form-control selectpicker show-tick'}),
             'units': forms.CheckboxSelectMultiple(),
         }
+
+class routeCardForm(forms.ModelForm):
+
+    class Meta:
+        model = RouteCards
+        fields = '__all__'
+        labels = {
+            'name': 'Наименование маршрутной карты',
+            'ktp':  'КТП',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'ktp': forms.CheckboxSelectMultiple(),
+        }
+
 
 class unitGroupForm(forms.ModelForm):
 

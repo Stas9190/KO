@@ -101,6 +101,9 @@ class Equip(models.Model):
     class Meta:
         managed = False
         db_table = 'equipment_equip'
+    
+    def __str__(self):
+        return self.ktp_name
 
 # Обслуживание
 class Maintenance(models.Model):
@@ -133,6 +136,34 @@ class Work(models.Model):
     class Meta:
         managed = False
         db_table = 'work'
+
+# Маршрутные карты
+class RouteCards(models.Model):
+    name = models.CharField(max_length=50)
+    # Поле для привязки маршрутной карты к ктп (Equip)
+    ktp = models.ManyToManyField(
+        Equip,
+        through='RouteCardsEquipmentEquip',
+        through_fields=('id_route_card', 'id_equipment_equip',),
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'route_cards'
+
+    def __str__(self):
+        return self.name
+
+# Связи между маршрутными картами и ктп
+class RouteCardsEquipmentEquip(models.Model):
+    id_route_card = models.ForeignKey(RouteCards, on_delete=models.CASCADE, db_column='id_route_card')
+    id_equipment_equip = models.ForeignKey(Equip, on_delete=models.CASCADE, db_column='id_equipment_equip')
+
+    class Meta:
+        managed = False
+        db_table = 'route_cards_equipment_equip'
+        unique_together = (('id_route_card', 'id_equipment_equip'),)
+        auto_created = True
 
 #Соответствия между узлами и типами оборудования
 #class Junction(models.Model):
