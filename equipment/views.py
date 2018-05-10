@@ -252,7 +252,7 @@ class executorDeleteView(DeleteView):
 
 # Создание привязки между узлами и оборудованием (EQUIP)!!!!!!
 def junctions(request):
-    equipList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u on e.group_name = u.id')
+    equipList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number, isnull(rc.[name], \'Отсутствует\') route_card FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u on e.group_name = u.id LEFT JOIN route_cards_equipment_equip r ON  r.id_equipment_equip = ee.id LEFT JOIN route_cards rc ON rc.id = r.id_route_card')
     return render(request, 'junctions.html', {'equipList': equipList})
 
 # Список и ссылки на ктп, которые входят в состав маршрутной карты

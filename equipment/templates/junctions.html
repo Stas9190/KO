@@ -18,6 +18,7 @@
                                     <th><center>Группа</center></th>
                                     <th><center>Тип оборудования</center></th>
                                     <th><center>Наименование КТП</center></th>
+                                    <th><center>Маршрутная карта</center></th>
                                     <th class="text-center">Действие</th>
                                 </tr>
                             </thead>
@@ -28,6 +29,7 @@
                                         <td style=" vertical-align: middle; "><small><center><a href="{% url 'maintenance' item.pk %}">{{ item.name }}</a></center></small></td>
                                         <td style=" vertical-align: middle; "><small><center>{{ item.model }}</center></small></td>
                                         <td style=" vertical-align: middle; "><small><center>{{ item.inv_number }}</center></small></td>
+                                        <td style=" vertical-align: middle; "><small><center>{{ item.route_card }}</center></small></td>
                                         <td class="text-center">
                                                 <div class="btn-group btn-group-xs ">
                                                         <a href="{% url 'junctions_edit' item.pk %}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
