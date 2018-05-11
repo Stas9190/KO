@@ -257,7 +257,7 @@ def junctions(request):
 
 # Список и ссылки на ктп, которые входят в состав маршрутной карты
 def ktp_in_route_card(request, pk):
-    ktpList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u ON e.group_name = u.id INNER JOIN route_cards_equipment_equip r ON r.id_equipment_equip = ee.id WHERE r.id_route_card = %s', [pk])
+    ktpList = Equip.objects.raw('SELECT ee.id, u.name name, e.model model, ee.ktp_name inv_number, rc.[name] route_card FROM equipment_equip ee INNER JOIN Equipment e ON e.id = ee.equipment_id_id INNER JOIN untiGroup u ON e.group_name = u.id INNER JOIN route_cards_equipment_equip r ON r.id_equipment_equip = ee.id INNER JOIN route_cards rc ON rc.id = r.id_route_card WHERE r.id_route_card = %s', [pk])
     return render (request, 'junctions.html', {'equipList': ktpList})
 
 def new_junctions(request):
