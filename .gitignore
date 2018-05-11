@@ -4,5 +4,5 @@ __pycache__
 env
 db.sqlite3
 /static
-equipment/static/AdminLTE
+equipment\static\AdminLTE
 .DS_Store
