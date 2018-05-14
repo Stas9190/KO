@@ -5,3 +5,4 @@ env
 db.sqlite3
 equipment/static/AdminLTE
 .DS_Store
+hhhh.py

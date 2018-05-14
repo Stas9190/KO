@@ -4,67 +4,34 @@
         <title>
             Вход в систему
         </title>
-        <script src="{% static 'bootstrap/js/jquery-2.2.3.min.js' %}"></script>
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-        <link rel="stylesheet" href="{% static 'bootstrap/css/signin.css' %}">
 
-        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/AdminLTE.css' %}">
-        <link rel="stylesheet" href="{% static 'css/skin-blue.css' %}">
-
-        <style>
-                body {
-                  padding-top: 90px;
-                }    
-            
-                .skleit {
-                    margin-top: -16px;
-                }
-            
-                .skleit_alert {
-                    margin-bottom: 5px;
-                    height: 10px;
-                }
-            
-                p {
-                    margin-top: -10px;
-                }
-            
-                h5 {
-                    padding-bottom: 50px;
-                }
-            
-                .text-center {
-                  text-align: center;
-                }
-            
-                .sk2 {
-                  margin-bottom: 15px;
-                }
-            
-                .glyph {
-                    margin-top: 5px;
-                }
-            
-                </style>
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/Ionicons/css/ionicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/AdminLTE.min.css' %}">
 
     </head>
-    <body>
-        <div class="container">
-            <h4 class="text-center form-signin-heading">Авторизация</h4>
-            <form method="POST" class="form-signin">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        <br>
-                       <input name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}" required/>
-                    </div>
-                {% endfor %}
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
-            </form>
+    <body class="hold-transition login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <b>Авторизация</b>
+            </div>
+            <div class="login-box-body">
+                <p class="login-box-msg">введите имя пользователя и пароль</p>
+                <form method="POST" class="form-signin">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group has-feedback">
+                            {{ field.label_tag }}
+                            <br>
+                            <input name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}"  type="{{ field.field.widget.input_type }}" required/>
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
+                </form>
+            </div>
         </div>
+        <script src="{% static 'AdminLTE/bower_components/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     </body>
 </html>
